@@ -2,11 +2,24 @@ import random
 import string
 import re
 
-# get inputs from user
+# get inputs from user and validation
 user_text = input('Please provide a random text for the generator:\n')
-user_length = int(input('Please specify desired number of words for the output text: \n'))
-user_order = int(input('Please specify desired order to improve context for the Markov Chain model: \n'))
 
+while True:
+    user_length = input('Please specify desired number of words for the output text: \n')
+    try:
+        user_length = int(user_length)
+        break
+    except:
+        print("Sorry, length must be an integer, pleace introduce the value again")
+
+while True:
+    user_order = input('Please specify desired order to improve context for the Markov Chain model: \n')
+    try:
+        user_order = int(user_order)
+        break
+    except:
+        print("Sorry, order must be an integer, pleace introduce the value again")
 
 # preprocessor of text to cleanse special characters
 special_chars = re.escape(string.punctuation)
@@ -52,7 +65,7 @@ def text_generator(user_text_cleaned, order=user_order, length=user_length):
     return ' '.join(generated_words)
 
 # clean the text provided by the user
-user_text_cleaned = preprocessor_text(user_text)
+user_text_cleaned = preprocessor_text(user_text).lower()
 
 # generate text based on provided variables
 generated_text = text_generator(user_text_cleaned)
