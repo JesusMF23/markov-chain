@@ -30,45 +30,45 @@ def preprocessor_text(user_text):
 
     return user_text
 
-# generator of text using markov chains
-def text_generator(user_text_cleaned, order=user_order, length=user_length):
-    # obtaining a list of words from provided text
-    words = user_text_cleaned.split()
-    
-    # storing markov chains with variables and states
-    chains = {}
-    for i in range(len(words) - order):
-        # we need to create combinations of context based on the order provided
-        key = tuple(words[i:i+order])
-
-        # we need to store the possible values for words
-        if key in chains:
-            chains[key].append(words[i+order])
-        else:
-            chains[key] = [words[i+order]]
-    
-    # selecting a random starting point
-    current_key = random.choice(list(chains.keys()))
-    generated_words = list(current_key)
-    
-    # append words to generate text based on possible values
-    while len(generated_words) < length:
-        possible_values = chains.get(current_key, [])
-        if not possible_values:
-            current_key = random.choice(list(chains.keys()))
-            generated_words.extend(current_key)
-        else:
-            next_word = random.choice(possible_values)
-            generated_words.append(next_word)
-            current_key = tuple(generated_words[-order:])
-    
-    return ' '.join(generated_words)
-
 # clean the text provided by the user
 user_text_cleaned = preprocessor_text(user_text).lower()
 
+# generator of text using markov chains
+def text_generator(user_text_cleaned, order=user_order, length=user_length):
+    # obtaining a list of words from provided text
+    words_list = user_text_cleaned.split()
+    
+    # storing markov chains with variables and states
+    markov_chains = {}
+    for i in range(len(words_list) - order):
+        # we need to create combinations of context based on the order provided
+        key = tuple(words_list[i:i+order])
+
+        # we need to store the possible values for words
+        if key in markov_chains:
+            markov_chains[key].append(words_list[i+order])
+        else:
+            markov_chains[key] = [words_list[i+order]]
+    
+    # selecting a random starting point from the possible values
+    current_key = random.choice(list(markov_chains.keys()))
+    generated_words_list = list(current_key)
+    
+    # append words to generate text based on possible values
+    while len(generated_words_list) < length:
+        possible_values = markov_chains.get(current_key, [])
+        if not possible_values:
+            current_key = random.choice(list(markov_chains.keys()))
+            generated_words_list.extend(current_key)
+        else:
+            next_word = random.choice(possible_values)
+            generated_words_list.append(next_word)
+            current_key = tuple(generated_words_list[-order:])
+    
+    return ' '.join(generated_words_list)
+
 # generate text based on provided variables
-generated_text = text_generator(user_text_cleaned)
+novel_text = text_generator(user_text_cleaned)
 
 # output the generated text
-print(generated_text)
+print(novel_text)
