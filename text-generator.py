@@ -54,7 +54,7 @@ def text_generator(user_text_cleaned, order=user_order, length=user_length):
     current_key = random.choice(list(markov_chains.keys()))
     generated_words_list = list(current_key)
     
-    # append words to generate text based on possible values
+    # append words to generate text based on possible values using random probability as transformation matrix
     while len(generated_words_list) < length:
         possible_values = markov_chains.get(current_key, [])
         if not possible_values:
